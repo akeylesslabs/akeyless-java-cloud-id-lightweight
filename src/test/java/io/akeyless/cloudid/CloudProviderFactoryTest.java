@@ -26,6 +26,18 @@ public class CloudProviderFactoryTest {
     public void rejectsUnknown() {
         assertThrows(IllegalArgumentException.class, () -> CloudProviderFactory.getCloudIdProvider("unknown"));
     }
+
+    @Test
+    public void rejectsNull() {
+        assertThrows(IllegalArgumentException.class, () -> CloudProviderFactory.getCloudIdProvider(null));
+    }
+
+    @Test
+    public void normalizesCaseAndWhitespace() {
+        assertInstanceOf(AwsIamCloudIdProvider.class, CloudProviderFactory.getCloudIdProvider("  AWS_IAM  "));
+        assertInstanceOf(AzureAdCloudIdProvider.class, CloudProviderFactory.getCloudIdProvider("Azure_Ad"));
+        assertInstanceOf(GcpCloudIdProvider.class, CloudProviderFactory.getCloudIdProvider("GCP"));
+    }
 }
 
 
